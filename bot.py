@@ -7,8 +7,11 @@ from aiogram.filters import Command
 from reg import get_response
 
 
+from aiogram.client.session.aiohttp import AiohttpSession
+
+session = AiohttpSession(proxy = "http://proxy.server:3128/")
 api = '7847354831:AAFsPpB2xoC8mJragwbhCAS2Y27KUDDmOXI'
-bot = Bot(api)
+bot = Bot(api,session=session)
 dp=Dispatcher()
 
 @dp.message(Command('start'))
@@ -20,7 +23,6 @@ async def send_hello(sms:types.Message):
 async def send_answer(sms:types.Message):
     a = await sms.answer_sticker(sticker = 'CAACAgIAAxkBAAEOAqBnzBSy2Cnau0Rk6w2Taidi2FyRUwACTgEAAhZCawpt1RThO2pwgjYE')
     juwap = await get_response(question=sms.text)
-    time.sleep(2)
     await a.delete()
     await sms.answer(text = juwap)
 
